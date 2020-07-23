@@ -1,0 +1,29 @@
+%YAML:1.0
+
+# Pioneer Robot 
+
+#number of the IMUs
+sysnum: 1
+#IMU's location. 'l' for left wheel, 'r' for right wheel 
+sysflag: "l"
+
+#Calculation start time
+start_t: 132020
+#Calculation end time
+end_t: 132945
+
+#--------------------------------------IMU parameters-----------------------------------
+IMU_left: 
+  -{Filepath: "C:\\Users\\10401\\Desktop\\Wheel-INS OS\\Data\\Test1\\Wheel-IMU\\", Filename: "C1_imu.bin"}
+  -{std_bg: 50.0, std_ba: 2000, std_sg: 50, std_sa: 500, ARW: 1.2, VRW: 6, Tao_t: 1800, ifODO: 1} 
+  -{init_heading: -3.43,  WheelLA: [-0.015, 0.005, 0.005], ODO_std: [0.035, 0.02, 0.02]}
+
+
+# Misalignment angle between the up IMU and the vehicle. (unit: degree)
+MisalignAngle: [0, -3.38, 0] 
+  
+ODO_dt: 0.5
+Wheel_Radius: 0.097
+
+# if use gyro bias to compensate the wheel velocity
+ifCompVel: 0
