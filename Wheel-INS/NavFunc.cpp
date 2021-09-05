@@ -142,7 +142,7 @@ void Bias_Compensate(double cur_meas[], IMU_ConstPara *imu, S_NavState *nav)
 	cur_meas[6] = (1 - nav->Sa[2])*(cur_meas[6] - nav->Ba[2]);
 }
 
-
+//The INS Mechanization algorithm adopted in this system is a simplified version. Because we focused on MEMS IMU and local robot positioning applications, we ignored the earth rotation, the change of naviagtion frame and gravity, which are important for high-end IMU and large-scale applications.
 void INS_Mech(double pre_meas[], double cur_meas[], S_NavState *nav) 
 {
 
@@ -154,7 +154,7 @@ void INS_Mech(double pre_meas[], double cur_meas[], S_NavState *nav)
 
 	
 	Vec3 Gzeta, Gzeta1, Gzeta2;
-	//¦¤¦È_k
+	
 	gyros_dt[0] = 0.5 * (pre_meas[1] + cur_meas[1]) * dt;
 	gyros_dt[1] = 0.5 * (pre_meas[2] + cur_meas[2]) * dt;
 	gyros_dt[2] = 0.5 * (pre_meas[3] + cur_meas[3]) * dt;
@@ -172,7 +172,7 @@ void INS_Mech(double pre_meas[], double cur_meas[], S_NavState *nav)
 	{
 		cos_v = cos(v / 2.0);
 		sin_v = (sin(v / 2.0) / v);
-		//R[¦Äq]*Q_bn (Sola,P7) ¦Äq = Q_bk_bk-1
+		//R[ï¿½ï¿½q]*Q_bn (Sola,P7) ï¿½ï¿½q = Q_bk_bk-1
 		quat_tmp[0] = cos_v*nav->Q_bn[0] + sin_v*(Gzeta[2] * nav->Q_bn[1] - Gzeta[1] * nav->Q_bn[2] + Gzeta[0] * nav->Q_bn[3]);
 		quat_tmp[1] = cos_v*nav->Q_bn[1] + sin_v*(-Gzeta[2] * nav->Q_bn[0] + Gzeta[0] * nav->Q_bn[2] + Gzeta[1] * nav->Q_bn[3]);
 		quat_tmp[2] = cos_v*nav->Q_bn[2] + sin_v*(Gzeta[1] * nav->Q_bn[0] - Gzeta[0] * nav->Q_bn[1] + Gzeta[2] * nav->Q_bn[3]);
@@ -189,15 +189,15 @@ void INS_Mech(double pre_meas[], double cur_meas[], S_NavState *nav)
 		rotation2euler(nav->Att, nav->C_bn);
 	}
 
-	//¦¤v_fk_b
+	//ï¿½ï¿½v_fk_b
 	acc_dt[0] = 0.5 * (pre_meas[4] + cur_meas[4]) * dt;
 	acc_dt[1] = 0.5 * (pre_meas[5] + cur_meas[5]) * dt;
 	acc_dt[2] = 0.5 * (pre_meas[6] + cur_meas[6]) * dt;
-	//¦¤v_fk_b + (¦¤¦È_k ¡Á ¦¤v_fk_b)/2
+	//ï¿½ï¿½v_fk_b + (ï¿½ï¿½ï¿½ï¿½_k ï¿½ï¿½ ï¿½ï¿½v_fk_b)/2
 	zeta[0] = acc_dt[0] + (-gyros_dt[2] * acc_dt[1] + gyros_dt[1] * acc_dt[2]) / 2.0;
 	zeta[1] = acc_dt[1] + (gyros_dt[2] * acc_dt[0] - gyros_dt[0] * acc_dt[2]) / 2.0;
 	zeta[2] = acc_dt[2] + (-gyros_dt[1] * acc_dt[0] + gyros_dt[0] * acc_dt[1]) / 2.0;
-	//¦¤v_fk_b(k-1)= ¦¤v_fk_b + (¦¤¦È_k ¡Á ¦¤v_fk_b)/2 + (¦¤¦È_k-1 ¡Á ¦¤v_fk_b + ¦¤v_fk_b ¡Á ¦¤¦È_k)/12
+	//ï¿½ï¿½v_fk_b(k-1)= ï¿½ï¿½v_fk_b + (ï¿½ï¿½ï¿½ï¿½_k ï¿½ï¿½ ï¿½ï¿½v_fk_b)/2 + (ï¿½ï¿½ï¿½ï¿½_k-1 ï¿½ï¿½ ï¿½ï¿½v_fk_b + ï¿½ï¿½v_fk_b ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½_k)/12
 	zeta[0] += (-nav->PreMeas[2] * acc_dt[1] + nav->PreMeas[1] * acc_dt[2] - nav->PreMeas[5] * gyros_dt[1] + nav->PreMeas[4] * gyros_dt[2]) / 12.0;
 	zeta[1] += (nav->PreMeas[2] * acc_dt[0] - nav->PreMeas[0] * acc_dt[2] + nav->PreMeas[5] * gyros_dt[0] - nav->PreMeas[3] * gyros_dt[2]) / 12.0;
 	zeta[2] += (-nav->PreMeas[1] * acc_dt[0] + nav->PreMeas[0] * acc_dt[1] - nav->PreMeas[4] * gyros_dt[0] + nav->PreMeas[3] * gyros_dt[1]) / 12.0;
@@ -207,14 +207,14 @@ void INS_Mech(double pre_meas[], double cur_meas[], S_NavState *nav)
 	Half_gros_dt[3] = -0.5*gyros_dt[2]; Half_gros_dt[4] = 1.0; Half_gros_dt[5] = 0.5*gyros_dt[0];
 	Half_gros_dt[6] = 0.5*gyros_dt[1]; Half_gros_dt[7] = -0.5*gyros_dt[0]; Half_gros_dt[8] = 1.0;
 	Mat3 Half_Cbn;
-	MultiplyMatrix(nav->C_bn, Half_gros_dt, 3, 3, 3, Half_Cbn); //Cbn*[I - (0.5¦¤¦È_k¡Á)]
+	MultiplyMatrix(nav->C_bn, Half_gros_dt, 3, 3, 3, Half_Cbn); //Cbn*[I - (0.5ï¿½ï¿½ï¿½ï¿½_kï¿½ï¿½)]
 
-	//¦¤v_nk = C_b(k-1)n * ¦¤v_b(k-1) + g_n * dt
+	//ï¿½ï¿½v_nk = C_b(k-1)n * ï¿½ï¿½v_b(k-1) + g_n * dt
 	an_hat[0] = Half_Cbn[0] * zeta[0] + Half_Cbn[1] * zeta[1] + Half_Cbn[2] * zeta[2];
 	an_hat[1] = Half_Cbn[3] * zeta[0] + Half_Cbn[4] * zeta[1] + Half_Cbn[5] * zeta[2];
 	an_hat[2] = Half_Cbn[6] * zeta[0] + Half_Cbn[7] * zeta[1] + Half_Cbn[8] * zeta[2] + NormG * dt;
 
-	// P_nk = P_nk-1 + (v_nk-1 + ¦¤v_nk/2)*dt
+	// P_nk = P_nk-1 + (v_nk-1 + ï¿½ï¿½v_nk/2)*dt
 	nav->Pos[0] = nav->Pos[0] + nav->Vel[0] * dt + 0.5*an_hat[0] * dt;
 	nav->Pos[1] = nav->Pos[1] + nav->Vel[1] * dt + 0.5*an_hat[1] * dt;
 	nav->Pos[2] = nav->Pos[2] + nav->Vel[2] * dt + 0.5*an_hat[2] * dt;
@@ -273,7 +273,7 @@ void EKF_Predict(double cur_meas[], IMU_ConstPara *imu, S_NavState *nav)
 		PHI[1][4] = dt;
 		PHI[2][5] = dt;
 
-		// dt*(C_bn*f_b)¡Á
+		// dt*(C_bn*f_b)ï¿½ï¿½
 		                            PHI[3][7] = -f_n[2] * dt;		PHI[3][8] = f_n[1] * dt;
 		PHI[4][6] = f_n[2] * dt;                      				PHI[4][8] = -f_n[0] * dt;
 		PHI[5][6] = -f_n[1] * dt;	PHI[5][7] = f_n[0] * dt;
@@ -653,7 +653,7 @@ void NHC_Odo_Update(IMU_ConstPara *imu, S_NavState *nav)
 
 			double vel_skew[9] = { 0, -nav->Vel[2], nav->Vel[1], nav->Vel[2], 0, -nav->Vel[0], -nav->Vel[1], nav->Vel[0], 0 };
 			double V_velskew[9] = { 0.0 };
-			MultiplyMatrix(C_nv, vel_skew, 3, 3, 3, V_velskew);//C_bv*C_nb*(V_IMUn¡Á)
+			MultiplyMatrix(C_nv, vel_skew, 3, 3, 3, V_velskew);//C_bv*C_nb*(V_IMUnï¿½ï¿½)
 
 			double CurGyros[3] = { nav->PreMeas[0] / nav->dt,nav->PreMeas[1] / nav->dt,nav->PreMeas[2] / nav->dt };//It was the increment when saved
 			double wib_skew[9] = { 0, -CurGyros[2], CurGyros[1], CurGyros[2], 0, -CurGyros[0], -CurGyros[1], CurGyros[0], 0 };
@@ -662,22 +662,22 @@ void NHC_Odo_Update(IMU_ConstPara *imu, S_NavState *nav)
 			double Cbvwskew[9] = { 0.0 };
 			double cLeverArm_Skew[9] = { 0.0 };
 			double vLeverArm[3] = { 0.0 };
-			MultiplyMatrix(nav->C_bv, wib_skew, 3, 3, 3, Cbvwskew);//C_bv*(w_ibb¡Á)
-			MultiplyMatrix(Cbvwskew, imu->WheelLeverArm, 3, 3, 1, vLeverArm);//C_bv*(w_ibb¡Á)*LeverArm
+			MultiplyMatrix(nav->C_bv, wib_skew, 3, 3, 3, Cbvwskew);//C_bv*(w_ibbï¿½ï¿½)
+			MultiplyMatrix(Cbvwskew, imu->WheelLeverArm, 3, 3, 1, vLeverArm);//C_bv*(w_ibbï¿½ï¿½)*LeverArm
 
 			double Cbnwskew[9] = { 0.0 };
 			double vnLeverArm[3] = { 0.0 };
 
 			MultiplyMatrix(nav->C_bn, wib_skew, 3, 3, 3, Cbnwskew);
-			MultiplyMatrix(Cbnwskew, imu->WheelLeverArm, 3, 3, 1, vnLeverArm);//C_bn*(w_ibb¡Á)*LeverArm
+			MultiplyMatrix(Cbnwskew, imu->WheelLeverArm, 3, 3, 1, vnLeverArm);//C_bn*(w_ibbï¿½ï¿½)*LeverArm
 			
 			double vnLeverArm_skew[9] = { 0, -vnLeverArm[2], vnLeverArm[1], vnLeverArm[2], 0, -vnLeverArm[0], -vnLeverArm[1], vnLeverArm[0], 0 };
 			double vVLeverArm_skew[9] = { 0.0 };
-			MultiplyMatrix(C_nv, vnLeverArm_skew, 3, 3, 3, vVLeverArm_skew);//C_nv£¨(C_bn(w_ibb¡Á)LA)¡Á£©
+			MultiplyMatrix(C_nv, vnLeverArm_skew, 3, 3, 3, vVLeverArm_skew);//C_nvï¿½ï¿½(C_bn(w_ibbï¿½ï¿½)LA)ï¿½ï¿½ï¿½ï¿½
 
 			double LeverArm_Skew[9] = { 0, -imu->WheelLeverArm[2], imu->WheelLeverArm[1], imu->WheelLeverArm[2], 0, -imu->WheelLeverArm[0],
 				-imu->WheelLeverArm[1], imu->WheelLeverArm[0], 0 };
-			MultiplyMatrix(nav->C_bv, LeverArm_Skew, 3, 3, 3, cLeverArm_Skew);//C_bv*(LeverArm¡Á)
+			MultiplyMatrix(nav->C_bv, LeverArm_Skew, 3, 3, 3, cLeverArm_Skew);//C_bv*(LeverArmï¿½ï¿½)
 
 			double Cbv_LAskew_wibb[9] = { 0.0 };
 			double diagwibb[9] = { CurGyros[0], 0.0, 0.0, 0.0, CurGyros[1], 0.0, 0.0, 0.0, CurGyros[2] };

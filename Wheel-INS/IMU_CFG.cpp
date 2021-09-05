@@ -63,7 +63,7 @@ void Configure_IMU_Para(IMU_ConstPara * IMU, cv::FileStorage fs)
 	}
 	else
 	{
-		printf("SYSFLAG ERROR£¡\n");
+		printf("SYSFLAG ERRORï¿½ï¿½\n");
 		system("pause");
 		return;
 	}
