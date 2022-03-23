@@ -1,7 +1,7 @@
 # Wheel-INS
 ## A Wheel-mounted MEMS IMU-based Dead Reckoning System
 
-Unlike the conventional odometer-aided INS (ODO/INS) where the IMU is placed either on the vehicle body or in the coach, in Wheel-INS, the IMU is mounted on the wheel of the ground vehicle to 1) obtain the wheel velocity thus replace the traditional odometer (or wheel encoder); 2) take advantages of the rotation modulation to mitigate the error accumulation of INS. The wheel velocity calculated by the gyroscope outputs and the wheel radius is treated as an external observation with non-holonomic constraint (NHC) to fuse with INS through an extended Kalman filter (EKF).
+Unlike the conventional odometer-aided inertial navigation system (ODO/INS) where the IMU is always placed either on the vehicle body or in the coach, in Wheel-INS, the IMU is mounted on the wheel of the ground vehicle. There are two major advanatges by doing so: 1) the wheel velocity can be obtained by the Wheel-IMU thus replace the traditional odometer (or wheel encoder); 2) the rotation modulation can be leveraged to mitigate the error accumulation of INS. Particularly, the wheel velocity calculated by the gyroscope outputs and the wheel radius is treated as an external observation with non-holonomic constraint (NHC) to fuse with INS through an extended Kalman filter (EKF).
 
 ## About this Repository
 The source code is in the *Wheel-INS* folder. It is very consice and light-weight which can be run easily in Windows (Some incompatibility issues should be solved for running in Linux). It does not rely on any third-party libraries.(We only use OpenCV to read configure file.)
@@ -15,6 +15,6 @@ Y. Wu, X. Niu and J. Kuang, "A Comparison of Three Measurement Models for the Wh
 
 Y. Wu, J. Kuang and X. Niu, "Wheel-INS2: Multiple MEMS IMU-based Dead Reckoning System for Wheeled Robots with Evaluation of Different IMU Configurations," arXiv:2012.10593, 2020. ([pdf](https://arxiv.org/abs/2012.10593))
 
-If you find our code and/or dataset helpful to your academic research, please consider citing our related papers.
+If you find our code and/or dataset helpful to your academic research, please consider citing the related papers.
 
-For any questions, please fell free to contact Dr. Jian Kuang (kuang@whu.edu.cn) or Mr. Yibin Wu (ybwu@whu.edu.cn).
+For any questions, please feel free to contact Mr. Yibin Wu (ybwu@whu.edu.cn) or Dr. Jian Kuang (kuang@whu.edu.cn).

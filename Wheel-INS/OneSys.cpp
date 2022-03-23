@@ -67,6 +67,7 @@ void One_Sys_Main(cv::FileStorage fs)
 				Bias_Compensate(CurMeas, &IMU, &Nav);
 				
 				//The INS Mechanization algorithm adopted in this system is a simplified version. Because we focused on MEMS IMU and local robot positioning applications, we ignored the earth rotation, the change of naviagtion frame and gravity, which are important for high-end IMU and large-scale applications.
+				//reference: E.-H. Shin, “Estimation techniques for low-cost inertial navigation,” Ph.D. dissertation, Dept. Geomatics Eng., Univ. of Calgary, Calgary, Canada, 2005.
 				INS_Mech(PreMeas, CurMeas, &Nav);
 
 				EKF_Predict(CurMeas, &IMU, &Nav);
