@@ -3,8 +3,8 @@
 
 Unlike the conventional odometer-aided inertial navigation system (ODO/INS) where the IMU is always placed either on the vehicle body or in the coach, in Wheel-INS, the IMU is mounted on the wheel of the ground vehicle. There are two major advanatges by doing so: 1) the wheel velocity can be obtained by the Wheel-IMU thus replace the traditional odometer (or wheel encoder); 2) the rotation modulation can be leveraged to mitigate the error accumulation of INS. Particularly, the wheel velocity calculated by the gyroscope outputs and the wheel radius is treated as an external observation with non-holonomic constraint (NHC) to fuse with INS through an extended Kalman filter (EKF).
 
-## News
-:tada::tada: Our paper on one wheel-mounted IMU-based SLAM ([Wheel-SLAM](https://arxiv.org/pdf/2211.03174.pdf)) is accepted to IEEE Robotics and Automation Letters. The [source code](https://github.com/i2Nav-WHU/Wheel-SLAM) is released. Check it out!
+## News :boom:
+:tada::tada: Nov. 2022 Our paper on one wheel-mounted IMU-based SLAM ([Wheel-SLAM](https://arxiv.org/pdf/2211.03174.pdf)) is accepted to IEEE Robotics and Automation Letters. The [source code](https://github.com/i2Nav-WHU/Wheel-SLAM) is released. Check it out!
 
 ## Introduction
 The source code is in the ***Wheel-INS*** folder. It is very consice and light-weight which can be run easily in Windows (Some incompatibility issues should be solved for running in Linux). It does not rely on any third-party libraries.(We only use OpenCV to read configure file.)
