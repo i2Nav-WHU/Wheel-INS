@@ -44,7 +44,7 @@ If you find our study helpful to your academic research, please consider citing 
   doi={10.1109/TVT.2021.3102409}}
 ```
 ```bibtex
-@ARTICLE{wu2022tvt,  
+@ARTICLE{wu2022tits,  
     author={Wu, Yibin and Kuang, Jian and Niu, Xiaoji},  
     journal={IEEE Transactions on Intelligent Transportation Systems},   
     title={{Wheel-INS2}: Multiple {MEMS IMU}-Based Dead Reckoning System With Different Configurations for Wheeled Robots},   
