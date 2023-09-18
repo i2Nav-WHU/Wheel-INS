@@ -40,8 +40,11 @@ public:
      * @param [in]     imupre, imucur imudata
      * */
     static void insMech(const PVA &pvapre, PVA &pvacur, const IMU &imupre, const IMU &imucur);
+    static void insMech_sim(const PVA &pvapre, PVA &pvacur, const IMU &imupre, const IMU &imucur);
 
 private:
+
+    
     /**
      * @breif 位置更新
      *        position update

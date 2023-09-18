@@ -205,6 +205,8 @@ private:
      * */
     void EKFUpdate(Eigen::MatrixXd &dz, Eigen::MatrixXd &H, Eigen::MatrixXd &R);
 
+    void gnssIterUpdate(GNSS &gnssdata);
+
     /**
      * @brief 反馈误差状态到当前状态
      *        feedback error state to the current state

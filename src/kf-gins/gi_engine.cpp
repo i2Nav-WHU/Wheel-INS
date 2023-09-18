@@ -26,6 +26,9 @@
 #include "gi_engine.h"
 #include "insmech.h"
 
+#include <fstream>
+extern std::ofstream debug_;
+
 GIEngine::GIEngine(GINSOptions &options) {
 
     this->options_ = options;
@@ -103,6 +106,9 @@ void GIEngine::newImuProcess() {
     // determine if we should do GNSS update
     int res = isToUpdate(imupre_.time, imucur_.time, updatetime);
 
+    res = 0;
+    
+
     if (res == 0) {
         // 只传播导航状态
         // only propagate navigation state
@@ -110,8 +116,11 @@ void GIEngine::newImuProcess() {
     } else if (res == 1) {
         // GNSS数据靠近上一历元，先对上一历元进行GNSS更新
         // gnssdata is near to the previous imudata, we should firstly do gnss update
+
         gnssUpdate(gnssdata_);
         stateFeedback();
+
+        //gnssIterUpdate(gnssdata_);
 
         pvapre_ = pvacur_;
         insPropagation(imupre_, imucur_);
@@ -121,6 +130,7 @@ void GIEngine::newImuProcess() {
         insPropagation(imupre_, imucur_);
         gnssUpdate(gnssdata_);
         stateFeedback();
+        //gnssIterUpdate(gnssdata_);
     } else {
         // GNSS数据在两个IMU数据之间(不靠近任何一个), 将当前IMU内插到整秒时刻
         // gnssdata is between the two imudata, we interpolate current imudata to gnss time
@@ -135,6 +145,7 @@ void GIEngine::newImuProcess() {
         // do GNSS position update at the whole second and feedback system states
         gnssUpdate(gnssdata_);
         stateFeedback();
+        //gnssIterUpdate(gnssdata_);
 
         // 对后一半IMU进行状态传播
         // propagate navigation state for the second half imudata
@@ -175,8 +186,8 @@ void GIEngine::insPropagation(IMU &imupre, IMU &imucur) {
     imuCompensate(imucur);
     // IMU状态更新(机械编排算法)
     // update imustate(mechanization)
+    //INSMech::insMech(pvapre_, pvacur_, imupre, imucur);
     INSMech::insMech(pvapre_, pvacur_, imupre, imucur);
-
     // 系统噪声传播，姿态误差采用phi角误差模型
     // system noise propagate, phi-angle error model for attitude error
     Eigen::MatrixXd Phi, F, Qd, G;
@@ -333,6 +344,80 @@ void GIEngine::gnssUpdate(GNSS &gnssdata) {
 
     // GNSS更新之后设置为不可用
     // Set GNSS invalid after update
+    gnssdata.isvalid = false;
+}
+
+void GIEngine::gnssIterUpdate(GNSS &gnssdata){
+
+    // IMU位置转到GNSS天线相位中心位置
+    // convert IMU position to GNSS antenna phase center position
+    Eigen::Vector3d antenna_pos;
+    Eigen::Matrix3d Dr, Dr_inv;
+    
+
+    // GNSS位置测量新息
+    // compute GNSS position innovation
+    Eigen::MatrixXd dz;
+    
+
+    // 构造GNSS位置观测矩阵
+    // construct GNSS position measurement matrix
+    Eigen::MatrixXd H_gnsspos;
+
+
+    // 位置观测噪声阵
+    // construct measurement noise matrix
+    Eigen::MatrixXd R_gnsspos;
+    R_gnsspos = gnssdata.std.cwiseProduct(gnssdata.std).asDiagonal();
+
+    Eigen::MatrixXd K;
+
+    for(int j = 0; j<100; j++)
+    {
+        Dr_inv      = Earth::DRi(pvacur_.pos);
+        Dr          = Earth::DR(pvacur_.pos);
+        antenna_pos = pvacur_.pos + Dr_inv * pvacur_.att.cbn * options_.antlever;
+        dz = Dr * (antenna_pos - gnssdata.blh);
+
+        H_gnsspos.resize(3, Cov_.rows());
+        H_gnsspos.setZero();
+        H_gnsspos.block(0, P_ID, 3, 3)   = Eigen::Matrix3d::Identity();
+        H_gnsspos.block(0, PHI_ID, 3, 3) = Rotation::skewSymmetric(pvacur_.att.cbn * options_.antlever);
+
+
+        assert(H_gnsspos.cols() == Cov_.rows());
+        assert(dz.rows() == H_gnsspos.rows());
+        assert(dz.rows() == R_gnsspos.rows());
+        assert(dz.cols() == 1);
+
+        auto temp         = H_gnsspos * Cov_ * H_gnsspos.transpose() + R_gnsspos;
+        K = Cov_ * H_gnsspos.transpose() * temp.inverse();
+
+        //fast-lio
+        //auto temp = H_gnsspos.transpose()*R_gnsspos.inverse()*H_gnsspos + Cov_.inverse();
+        //K = temp.inverse()*H_gnsspos.transpose()*R_gnsspos.inverse();
+
+        Eigen::MatrixXd I;
+        I.resizeLike(Cov_);
+        I.setIdentity();
+        I = I - K * H_gnsspos;
+        dx_  = dx_ + K * (dz - H_gnsspos * dx_);
+        double dx_norm = dx_.norm();
+        debug_<<"iteration j = "<<j<< " dx.norm = "<<dx_norm<<std::endl;
+
+        
+        stateFeedback();
+
+        if (dx_norm < 0.00001) 
+        {debug_<<std::setprecision(15)<<"dx.norm = "<<dx_norm<<" iteration j = "<<j<<std::endl;break;}
+    }
+    
+
+    Eigen::MatrixXd I;
+    I.resizeLike(Cov_);
+    I.setIdentity();
+    Cov_ = (I - K * H_gnsspos) * Cov_;
+
     gnssdata.isvalid = false;
 }
 

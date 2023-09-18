@@ -187,3 +187,61 @@ void INSMech::attUpdate(const PVA &pvapre, PVA &pvacur, const IMU &imupre, const
     pvacur.att.cbn   = Rotation::quaternion2matrix(pvacur.att.qbn);
     pvacur.att.euler = Rotation::matrix2euler(pvacur.att.cbn);
 }
+
+
+
+void INSMech::insMech_sim(const PVA &pvapre, PVA &pvacur, const IMU &imupre, const IMU &imucur) {
+
+    const double NormG = 9.782940329221166;
+
+    Eigen::Vector3d d_vfb, d_vfn, d_vgn, gl;
+    Eigen::Vector3d temp1, temp2, temp3;
+    Eigen::Vector3d imucur_dvel, imucur_dtheta, imupre_dvel, imupre_dtheta;
+
+    imucur_dvel = imucur.dvel;
+    imucur_dtheta = imucur.dtheta;
+    imupre_dvel = imupre.dvel;
+    imupre_dtheta = imupre.dtheta;
+
+    // rotational and sculling motion
+    temp1 = imucur_dtheta.cross(imucur_dvel) / 2;
+    temp2 = imupre_dtheta.cross(imucur_dvel) / 12;
+    temp3 = imupre_dvel.cross(imucur_dtheta) / 12;
+
+
+    // velocity increment due to the specific force
+    d_vfb = imucur_dvel + temp1 + temp2 + temp3;
+
+
+    // velocity increment dut to the specfic force projected to the n-frame
+    d_vfn = pvapre.att.cbn * d_vfb;
+
+
+    // velocity increment due to the gravity and Coriolis force
+    gl << 0, 0, NormG;
+    d_vgn = gl * imucur.dt;
+
+    // velocity update finish
+    pvacur.vel = pvapre.vel + d_vfn + d_vgn;
+
+
+    Eigen::Vector3d midvel;
+
+    // recompute velocity and position at k-1/2
+    midvel = (pvacur.vel + pvapre.vel) / 2;
+    pvacur.pos = pvapre.pos + midvel * imucur.dt;
+
+    Eigen::Quaterniond qbb;
+    Eigen::Vector3d rot_bframe;
+
+
+    // b-frame rotation vector (b(k) with respect to b(k-1)-frame)
+    // compensate the second-order coning correction term.
+    rot_bframe = imucur_dtheta + imupre_dtheta.cross(imucur_dtheta) / 12;
+    qbb   = Rotation::rotvec2quaternion(rot_bframe);
+
+    // attitude update finish
+    pvacur.att.qbn   = pvapre.att.qbn * qbb;
+    pvacur.att.cbn   = Rotation::quaternion2matrix(pvacur.att.qbn);
+    pvacur.att.euler = Rotation::matrix2euler(pvacur.att.cbn);
+}

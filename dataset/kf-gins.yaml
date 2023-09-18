@@ -29,7 +29,7 @@ endtime: -1
 # initial state
 # 初始位置, 纬度 经度 高程
 # initial position, latitude, longitude, altitude. [deg, deg, m]
-initpos: [ 30.4447873701, 114.4718632047, 20.899 ]
+initpos: [ 30.4604299618,   114.4725035442,  23.07442 ]
 
 # 初始速度, 北向速度, 东向速度, 垂向速度
 # initial velocity, speed in the directions of north, east and down. [m/s, m/s, m/s]
@@ -37,7 +37,7 @@ initvel: [ 0.0, 0.0, 0.0 ]
 
 # 初始姿态, 欧拉角(ZYX旋转顺序), 横滚, 俯仰, 航向
 # initial attitude, euler angle(ZYX rotation), roll, pitch, yaw [deg, deg, deg]
-initatt: [ 0.85421502, -2.03480295, 185.70235133 ]
+initatt: [ 1.40679,    0.38469,    276.51585 ]
 
 # 初始IMU零偏和比例因子, IMU的三个轴(前、右、下)
 # initial IMU bias and scale error, three axes of the imu (forward, right and down)

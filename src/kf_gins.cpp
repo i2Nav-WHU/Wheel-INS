@@ -33,6 +33,10 @@
 
 #include "kf-gins/gi_engine.h"
 
+#include <fstream>
+std::ofstream debug_;
+
+
 bool loadConfig(YAML::Node &config, GINSOptions &options);
 void writeNavResult(double time, NavState &navstate, FileSaver &navfile, FileSaver &imuerrfile);
 void writeSTD(double time, Eigen::MatrixXd &cov, FileSaver &stdfile);
@@ -109,8 +113,11 @@ int main(int argc, char *argv[]) {
     // stdfile: time(1) + pva_std(9) + imubias_std(6) + imuscale_std(6) = 22
     int nav_columns = 11, imuerr_columns = 13, std_columns = 22;
     FileSaver navfile(outputpath + "/KF_GINS_Navresult.nav", nav_columns, FileSaver::TEXT);
-    FileSaver imuerrfile(outputpath + "/KF_GINS_IMU_ERR.bin", imuerr_columns, FileSaver::BINARY);
-    FileSaver stdfile(outputpath + "/KF_GINS_STD.bin", std_columns, FileSaver::BINARY);
+    FileSaver imuerrfile(outputpath + "/KF_GINS_IMU_ERR.txt", imuerr_columns, FileSaver::TEXT);
+    FileSaver stdfile(outputpath + "/KF_GINS_STD.txt", std_columns, FileSaver::TEXT);
+
+    std::string debugoutputpath = outputpath + "/debug.txt";
+    debug_.open(debugoutputpath.c_str());
 
     // 检查文件是否正确打开
     // check if these files are all opened
@@ -124,7 +131,10 @@ int main(int argc, char *argv[]) {
     if (endtime < 0) {
         endtime = imufile.endtime();
     }
-    if (endtime > 604800 || starttime < imufile.starttime() || starttime > endtime) {
+    std::cout<<std::setprecision(16)<<"starttime "<<starttime<<std::endl;
+    std::cout<<"imufile.starttime() "<<imufile.starttime()<<std::endl;
+    std::cout<<"endtime "<<endtime<<std::endl;
+    if (starttime < imufile.starttime() || starttime > endtime) { //endtime > 604800 || in case of ROS timestamp 
         std::cout << "Process time ERROR!" << std::endl;
         return -1;
     }
