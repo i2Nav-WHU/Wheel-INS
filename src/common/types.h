@@ -25,27 +25,22 @@
 
 #include <Eigen/Geometry>
 
+const int IMU_RATE = 200;
+const int RANK      = 21;
+const int NOISERANK = 18;
+
 using Eigen::Matrix3d;
 using Eigen::Quaterniond;
 using Eigen::Vector3d;
 
-typedef struct GNSS {
-    double time;
-
-    Vector3d blh;
-    Vector3d std;
-
-    bool isvalid;
-} GNSS;
 
 typedef struct IMU {
-    double time;
+    double timestamp;
     double dt;
 
-    Vector3d dtheta;
-    Vector3d dvel;
+    Vector3d angular_velocity;
+    Vector3d acceleration;
 
-    double odovel;
 } IMU;
 
 typedef struct Pose {

@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
-project(KF-GINS)
+project(Wheel-INS)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_BUILD_TYPE DEBUG)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
@@ -15,11 +16,11 @@ else()
 endif()
 
 file(GLOB_RECURSE SOURCE
-        src/kf_gins.cpp
-        src/fileio/fileloader.cc
-        src/fileio/filesaver.cc
-        src/kf-gins/gi_engine.cpp
-        src/kf-gins/insmech.cpp)
+        src/main.cpp
+        src/fileio/fileloader.cpp
+        src/fileio/filesaver.cpp
+        src/wheel_ins/wheelins.cpp
+        src/wheel_ins/insmech.cpp)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 add_executable(${PROJECT_NAME} ${SOURCE})
@@ -31,7 +32,7 @@ include_directories(ThirdParty/eigen-3.3.9)
 add_subdirectory(ThirdParty/yaml-cpp-0.7.0)
 target_link_libraries(${PROJECT_NAME} yaml-cpp)
 
-# abseil
+
 set(ABSL_PROPAGATE_CXX_STD true)
 add_subdirectory(ThirdParty/abseil-cpp-20220623.1)
 target_link_libraries(${PROJECT_NAME}

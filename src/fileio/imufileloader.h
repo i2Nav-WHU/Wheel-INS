@@ -31,11 +31,11 @@ class ImuFileLoader : public FileLoader {
 public:
     ImuFileLoader() = delete;
     ImuFileLoader(const string &filename, int columns, int rate = 200) {
-        open(filename, columns, FileLoader::TEXT);
+        open(filename, columns, FileLoader::BINARY);
 
         dt_ = 1.0 / (double) rate;
 
-        imu_.time = 0;
+        imu_.timestamp = 0;
     }
 
     const IMU &next() {
@@ -43,24 +43,19 @@ public:
 
         data_ = load();
 
-        imu_.time = data_[0];
+        imu_.timestamp = data_[0];
         //if the original imu dta is not increment
         for (int i = 1; i<=6; i++)
             data_[i] = data_[i]*dt_;
 
-        memcpy(imu_.dtheta.data(), &data_[1], 3 * sizeof(double));
-        memcpy(imu_.dvel.data(), &data_[4], 3 * sizeof(double));
+        memcpy(imu_.angular_velocity.data(), &data_[1], 3 * sizeof(double));
+        memcpy(imu_.acceleration.data(), &data_[4], 3 * sizeof(double));
 
-        double dt = imu_.time - imu_pre_.time;
+        double dt = imu_.timestamp - imu_pre_.timestamp;
         if (dt < 0.1) {
             imu_.dt = dt;
         } else {
             imu_.dt = dt_;
-        }
-
-        // 增量形式
-        if (columns_ > 7) {
-            imu_.odovel = data_[7] * imu_.dt;
         }
 
         return imu_;
