@@ -45,8 +45,8 @@ public:
 
         imu_.timestamp = data_[0];
         //if the original imu dta is not increment
-        for (int i = 1; i<=6; i++)
-            data_[i] = data_[i]*dt_;
+        // for (int i = 1; i<=6; i++)
+        //     data_[i] = data_[i]*dt_;
 
         memcpy(imu_.angular_velocity.data(), &data_[1], 3 * sizeof(double));
         memcpy(imu_.acceleration.data(), &data_[4], 3 * sizeof(double));

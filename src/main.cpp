@@ -25,6 +25,8 @@
 #include <iomanip>
 #include <iostream>
 #include <yaml-cpp/yaml.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "common/angle.h"
 #include "fileio/filesaver.h"
@@ -80,6 +82,8 @@ int main(int argc, char *argv[]) {
         std::cout << "Failed when loading configuration. Please check the file path and output path!" << std::endl;
         return -1;
     }
+    if (access(outputpath.c_str(), F_OK))
+    mkdir(outputpath.c_str(), S_IRWXU);
 
     // imu数据配置，数据处理区间
     // imudata configuration， data processing interval
@@ -113,7 +117,7 @@ int main(int argc, char *argv[]) {
     const int nav_columns = 11, imuerr_columns = 13, std_columns = 22;
     FileSaver navfile(outputpath + "/wheelins_Navresult.nav", nav_columns, FileSaver::TEXT);
     FileSaver imuerrfile(outputpath + "/wheelins_IMU_ERR.txt", imuerr_columns, FileSaver::TEXT);
-    FileSaver stdfile(outputpath + "wheelins_STD.txt", std_columns, FileSaver::TEXT);
+    FileSaver stdfile(outputpath + "/wheelins_STD.txt", std_columns, FileSaver::TEXT);
 
     std::string debugoutputpath = outputpath + "/debug.txt";
     debug_.open(debugoutputpath.c_str());
@@ -183,12 +187,14 @@ int main(int argc, char *argv[]) {
         navstate  = wheelins.getNavState();
         cov       = wheelins.getCovariance();
 
+        // std::cout << timestamp << " " << navstate.pos.transpose() << " " << navstate.vel.transpose() << " " << navstate.euler.transpose()<<std::endl;
+
         // 保存处理结果
         // save processing results
         writeNavResult(timestamp, navstate, navfile, imuerrfile);
         writeSTD(timestamp, cov, stdfile);
 
-        std::cout<<std::setprecision(15)<<timestamp<<" "<<navstate.pos.transpose()<<" "<<navstate.euler.transpose()<<std::endl;
+        
         // 显示处理进展
         // display processing progress
         percent = int((imu_cur.timestamp - starttime) / interval * 100);
@@ -304,7 +310,6 @@ void writeNavResult(double time, NavState &navstate, FileSaver &navfile, FileSav
     // 保存导航结果
     // save navigation result
     result.clear();
-    result.push_back(0);
     result.push_back(time);
     result.push_back(navstate.pos[0]);
     result.push_back(navstate.pos[1]);

@@ -1,26 +1,3 @@
-/*
- * KF-GINS: An EKF-Based GNSS/INS Integrated Navigation System
- *
- * Copyright (C) 2022 i2Nav Group, Wuhan University
- *
- *     Author : Liqiang Wang
- *    Contact : wlq@whu.edu.cn
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-
 #include "common/rotation.h"
 
 #include "wheelins.h"
@@ -35,8 +12,7 @@ WheelINS::WheelINS(Paras &options) {
     
     timestamp_ = 0;
 
-    // 设置协方差矩阵，系统噪声阵和系统误差状态矩阵大小
-    // resize covariance matrix, system noise matrix, and system error state matrix
+
     Cov_.resize(RANK, RANK);
     Qc_.resize(NOISERANK, NOISERANK);
     dx_.resize(RANK, 1);
@@ -44,8 +20,6 @@ WheelINS::WheelINS(Paras &options) {
     Qc_.setZero();
     dx_.setZero();
 
-    // 初始化系统噪声阵
-    // initialize noise matrix
     auto imunoise                   = options_.imunoise;
     Qc_.block(ARW_ID, ARW_ID, 3, 3) = imunoise.gyr_arw.cwiseProduct(imunoise.gyr_arw).asDiagonal();
     Qc_.block(VRW_ID, VRW_ID, 3, 3) = imunoise.acc_vrw.cwiseProduct(imunoise.acc_vrw).asDiagonal();
@@ -138,8 +112,7 @@ void WheelINS::insPropagation(IMU &imupre, IMU &imucur) {
     // IMU状态更新(机械编排算法)
 
     INSMech::insMech(pvapre_, pvacur_, imupre, imucur);
-    std::cout<<"pvapre_: "<<pvapre_.pos.transpose()<<" "<<pvapre_.att.euler.transpose()<<std::endl;
-    std::cout<<"pvacur_: "<<pvacur_.pos.transpose()<<" "<<pvacur_.att.euler.transpose()<<std::endl;
+
     // 系统噪声传播，姿态误差采用phi角误差模型
     // system noise propagate, phi-angle error model for attitude error
     Eigen::MatrixXd Phi, F, Qd, G;
@@ -288,11 +261,10 @@ void WheelINS::ODOUpdate() {
 
 void WheelINS::getWheelVelocity() {
 
-    
     double gyro_x_mean = 0.0;
 
     int i = 0;
-    for(auto it = imuBuff.rend(); i < imuBuffsize; it++,i++){
+    for(auto it = imuBuff.begin(); it != imuBuff.end(); ++it){
         gyro_x_mean += it->angular_velocity[0];
     }
     gyro_x_mean /= imuBuffsize;
