@@ -1,100 +1,146 @@
-/*
- * KF-GINS: An EKF-Based GNSS/INS Integrated Navigation System
- *
- * Copyright (C) 2022 i2Nav Group, Wuhan University
- *
- *     Author : Liqiang Wang
- *    Contact : wlq@whu.edu.cn
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-#ifndef KF_GINS_TYPES_H
-#define KF_GINS_TYPES_H
+#pragma once
 
 #include <Eigen/Dense>
 #include <iomanip>
 #include <iostream>
-
-#include "common/angle.h"
-
-static constexpr double NormG = 9.782940329221166;
-
-typedef struct Attitude {
-    Eigen::Quaterniond qbn;
-    Eigen::Matrix3d cbn;
-    Eigen::Vector3d euler;
-} Attitude;
-
-typedef struct PVA {
-    Eigen::Vector3d pos;
-    Eigen::Vector3d vel;
-    Attitude att;
-} PVA;
-
-typedef struct ImuError {
-    Eigen::Vector3d gyrbias;
-    Eigen::Vector3d accbias;
-    Eigen::Vector3d gyrscale;
-    Eigen::Vector3d accscale;
-} ImuError;
-
-typedef struct NavState {
-    Eigen::Vector3d pos;
-    Eigen::Vector3d vel;
-    Eigen::Vector3d euler;
-
-    ImuError imuerror;
-} NavState;
-
-typedef struct ImuNoise {
-    Eigen::Vector3d gyr_arw;
-    Eigen::Vector3d acc_vrw;
-    Eigen::Vector3d gyrbias_std;
-    Eigen::Vector3d accbias_std;
-    Eigen::Vector3d gyrscale_std;
-    Eigen::Vector3d accscale_std;
-    double corr_time;
-} ImuNoise;
-
-typedef struct Paras {
-
-    // 初始状态和状态标准差
-    // initial state and state standard deviation
-    NavState initstate;
-    NavState initstate_std;
-
-    // IMU噪声参数
-    // imu noise parameters
-    ImuNoise imunoise;
-
-    // 安装参数
-    // install parameters
-    Eigen::Vector3d mountAngle = {0, 0, 0};
-
-    Eigen::Vector3d leverArm = {0, 0, 0};
-    Eigen::Vector3d odo_measurement_std = {0, 0, 0};
+#include <yaml-cpp/yaml.h>
+#include "common/types.h"
+#include "fileio/filesaver.h"
 
 
-    double odo_update_interval;
-    double wheelradius;
-    
+inline bool loadConfig(YAML::Node &config, Paras &paras) {
+
+    std::vector<double> initposstd_vec, initvelstd_vec, initattstd_vec;
+
+    try {
+        initposstd_vec = config["initposstd"].as<std::vector<double>>();
+        initvelstd_vec = config["initvelstd"].as<std::vector<double>>();
+        initattstd_vec = config["initattstd"].as<std::vector<double>>();
+    } catch (YAML::Exception &exception) {
+        std::cout << "Failed when loading configuration. Please check initial std of position, velocity, and attitude!"
+                  << std::endl;
+        return false;
+    }
+    for (int i = 0; i < 3; i++) {
+        paras.initstate_std.pos[i]   = initposstd_vec[i];
+        paras.initstate_std.vel[i]   = initvelstd_vec[i];
+        paras.initstate_std.euler[i] = initattstd_vec[i] * D2R;
+    }
+
+    double arw, vrw, gbstd, abstd, gsstd, asstd;
+
+    try{
+        arw = config["imunoise"]["arw"].as<double>();
+        vrw = config["imunoise"]["vrw"].as<double>();
+        gbstd = config["imunoise"]["gbstd"].as<double>();
+        abstd = config["imunoise"]["abstd"].as<double>();
+        gsstd = config["imunoise"]["gsstd"].as<double>();
+        asstd = config["imunoise"]["asstd"].as<double>();
+        paras.imunoise.corr_time = config["imunoise"]["corrtime"].as<double>();
+    }catch (YAML::Exception &exception) {
+        std::cout << "Failed when loading configuration. Please check IMU noise!" << std::endl;
+        return false;
+    }
+        for (int i = 0; i < 3; i++) {
+        paras.imunoise.gyr_arw[i]      = arw;
+        paras.imunoise.acc_vrw[i]      = vrw;
+        paras.imunoise.gyrbias_std[i]  = gbstd;
+        paras.imunoise.accbias_std[i]  = abstd;
+        paras.imunoise.gyrscale_std[i] = gsstd;
+        paras.imunoise.accscale_std[i] = asstd;
+    }
+ 
+
+    paras.imunoise.gyr_arw *= (D2R / 60.0);
+    paras.imunoise.acc_vrw /= 60.0;
+    paras.imunoise.gyrbias_std *= (D2R / 3600.0);
+    paras.imunoise.accbias_std *= 1e-5;
+    paras.imunoise.gyrscale_std *= 1e-6;
+    paras.imunoise.accscale_std *= 1e-6;
+    paras.imunoise.corr_time *= 3600;
+
+
+    std::vector<double> mountAngle, leverArm, odo_measurement_std;
+
+    double odo_update_interval, wheelradius;
     bool ifCompensateVelocity;
 
-    double starttime;
+    mountAngle = config["MisalignAngle"].as<std::vector<double>>();
+    leverArm = config["WheelLA"].as<std::vector<double>>();
+    odo_measurement_std = config["ODO_std"].as<std::vector<double>>();
 
 
-} Paras;
+    paras.mountAngle = Eigen::Vector3d(mountAngle.data());
+    paras.leverArm = Eigen::Vector3d(leverArm.data());
+    paras.odo_measurement_std = Eigen::Vector3d(odo_measurement_std.data());
 
-#endif // KF_GINS_TYPES_H
+    paras.odo_update_interval = config["ODO_dt"].as<double>();
+    paras.wheelradius = config["Wheel_Radius"].as<double>();
+
+    paras.ifCompensateVelocity = config["ifCompVel"].as<bool>();
+
+    paras.starttime = config["starttime"].as<double>();
+
+    return true;
+}
+
+inline void writeNavResult(double time, NavState &navstate, FileSaver &navfile, FileSaver &imuerrfile) {
+
+    std::vector<double> result;
+
+    result.clear();
+    result.push_back(time);
+    result.push_back(navstate.pos[0]);
+    result.push_back(navstate.pos[1]);
+    result.push_back(navstate.pos[2]);
+    result.push_back(navstate.vel[0]);
+    result.push_back(navstate.vel[1]);
+    result.push_back(navstate.vel[2]);
+    result.push_back(navstate.euler[0] * R2D);
+    result.push_back(navstate.euler[1] * R2D);
+    result.push_back(navstate.euler[2] * R2D);
+    navfile.dump(result);
+
+    auto imuerr = navstate.imuerror;
+    result.clear();
+    result.push_back(time);
+    result.push_back(imuerr.gyrbias[0] * R2D * 3600);
+    result.push_back(imuerr.gyrbias[1] * R2D * 3600);
+    result.push_back(imuerr.gyrbias[2] * R2D * 3600);
+    result.push_back(imuerr.accbias[0] * 1e5);
+    result.push_back(imuerr.accbias[1] * 1e5);
+    result.push_back(imuerr.accbias[2] * 1e5);
+    result.push_back(imuerr.gyrscale[0] * 1e6);
+    result.push_back(imuerr.gyrscale[1] * 1e6);
+    result.push_back(imuerr.gyrscale[2] * 1e6);
+    result.push_back(imuerr.accscale[0] * 1e6);
+    result.push_back(imuerr.accscale[1] * 1e6);
+    result.push_back(imuerr.accscale[2] * 1e6);
+    imuerrfile.dump(result);
+}
+
+inline void writeSTD(double time, Eigen::MatrixXd &cov, FileSaver &stdfile) {
+
+    std::vector<double> result;
+
+    result.clear();
+    result.push_back(time);
+
+    for (int i = 0; i < 6; i++) {
+        result.push_back(sqrt(cov(i, i)));
+    }
+    for (int i = 6; i < 9; i++) {
+        result.push_back(sqrt(cov(i, i)) * R2D);
+    }
+
+    for (int i = 9; i < 12; i++) {
+        result.push_back(sqrt(cov(i, i)) * R2D * 3600);
+    }
+    for (int i = 12; i < 15; i++) {
+        result.push_back(sqrt(cov(i, i)) * 1e5);
+    }
+    for (int i = 15; i < 21; i++) {
+        result.push_back(sqrt(cov(i, i)) * 1e6);
+    }
+    stdfile.dump(result);
+}

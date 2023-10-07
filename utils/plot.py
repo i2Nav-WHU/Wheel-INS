@@ -2,8 +2,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-path = "/home/yibin/code/KF-GINS/output/robot/wheelins_Navresult.nav"
-imupath = "/home/yibin/code/KF-GINS/dataset/robot/Wheel-IMU/C1_imu.bin"
+platform = "robot" # robot
+path = "/home/yibin/code/KF-GINS/output/" + platform + "/wheelins_Navresult.nav"
+imupath = "/home/yibin/code/KF-GINS/dataset/" + platform + "/Wheel-IMU/C1_imu.bin"
 
 num_columns = 7
 dtype = np.float64
@@ -22,7 +23,7 @@ except FileNotFoundError:
 except Exception as e:
     print(f"An error occurred: {str(e)}")
 
-fig, axs = plt.subplots(2, 1,figsize=(12, 5))
+fig, axs = plt.subplots(2, 1)
 axs[0].plot(imu[:, 0] - imu[0, 0], imu[:, 1])
 axs[0].plot(imu[:, 0] - imu[0, 0], imu[:, 2])
 axs[0].plot(imu[:, 0] - imu[0, 0], imu[:, 3])
@@ -32,8 +33,8 @@ axs[0].legend(['X', 'Y', 'Z'])
 axs[1].plot(imu[:, 0] - imu[0, 0], imu[:, 4])
 axs[1].plot(imu[:, 0] - imu[0, 0], imu[:, 5])
 axs[1].plot(imu[:, 0] - imu[0, 0], imu[:, 6])
-axs[1].set_xlabel('Time (s)')
-axs[1].set_ylabel('Acc (m/s2) ' + str(imu[0, 0]))
+axs[1].set_xlabel('Time (s) ' + str(imu[0, 0]))
+axs[1].set_ylabel('Acc (m/s2)')
 axs[1].legend(['X', 'Y', 'Z'])
 
 traj =  np.loadtxt(path)
@@ -43,7 +44,6 @@ ax.set_xlabel('X (m)')
 ax.set_ylabel('Y (m)')
 ax.axis('equal')
 ax.legend(['Wheel-INS'])
-
 
 
 plt.show()

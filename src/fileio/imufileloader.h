@@ -1,25 +1,3 @@
-/*
- * OB_GINS: An Optimization-Based GNSS/INS Integrated Navigation System
- *
- * Copyright (C) 2022 i2Nav Group, Wuhan University
- *
- *     Author : Hailiang Tang
- *    Contact : thl@whu.edu.cn
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 #ifndef IMUFILELOADER_H
 #define IMUFILELOADER_H
 
@@ -44,9 +22,6 @@ public:
         data_ = load();
 
         imu_.timestamp = data_[0];
-        //if the original imu dta is not increment
-        // for (int i = 1; i<=6; i++)
-        //     data_[i] = data_[i]*dt_;
 
         memcpy(imu_.angular_velocity.data(), &data_[1], 3 * sizeof(double));
         memcpy(imu_.acceleration.data(), &data_[4], 3 * sizeof(double));
