@@ -1,8 +1,8 @@
 # Pioneer Robot 
 
-imupath: "/home/yibin/code/Wheel-INS/dataset/car/Wheel-IMU/C1_imu.bin"
+imupath: "~/Wheel-INS/dataset/car/Wheel-IMU/C1_imu.bin"
 
-outputpath: "/home/yibin/code/Wheel-INS/output/car"
+outputpath: "~/Wheel-INS/output/car"
 
 imudatalen: 7
 

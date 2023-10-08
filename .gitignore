@@ -3,5 +3,4 @@ lib/
 build/
 .vscode/
 .idea/
-dataset/
 output/
