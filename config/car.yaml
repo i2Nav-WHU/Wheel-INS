@@ -1,8 +1,12 @@
-# Pioneer Robot 
+# Car 
 
+#Linux
 imupath: "~/Wheel-INS/dataset/car/Wheel-IMU/C1_imu.bin"
-
 outputpath: "~/Wheel-INS/output/car"
+
+#Windows
+# imupath: "yourpath\\Wheel-INS\\dataset\\robot\\Wheel-IMU\\C1_imu.bin"
+# outputpath: "yourpath\\Wheel-INS\\output\\robot"
 
 imudatalen: 7
 

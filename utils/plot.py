@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+platform = "car"  # robot
+# Common base directory
+base_dir = "D:\\Wheel-INS" if os.name == "nt" else "/home/yibin/code/Wheel-INS"
 
-platform = "car" # robot
-path = "/home/yibin/code/Wheel-INS/output/" + platform + "/wheelins_Navresult.nav"
-imupath = "/home/yibin/code/Wheel-INS/dataset/" + platform + "/Wheel-IMU/C1_imu.bin"
+# Platform-specific paths
+path = os.path.join(base_dir, "output", platform, "wheelins_Navresult.nav")
+imupath = os.path.join(base_dir, "dataset", platform, "Wheel-IMU", "C1_imu.bin")
 
 num_columns = 7
 dtype = np.float64
@@ -15,7 +19,7 @@ try:
     
     # Reshape the data into a 2D array with 7 columns
     imu = imu.reshape(-1, num_columns)
-    
+
     print("Successfully read the binary file.")
     print("Shape of the loaded data:", imu.shape)
 except FileNotFoundError:
@@ -37,7 +41,7 @@ axs[1].set_xlabel('Time (s) ' + str(imu[0, 0]))
 axs[1].set_ylabel('Acc (m/s2)')
 axs[1].legend(['X', 'Y', 'Z'])
 
-traj =  np.loadtxt(path)
+traj = np.loadtxt(path)
 fig, ax = plt.subplots()
 ax.plot(traj[:, 1], traj[:, 2])
 ax.set_xlabel('X (m)')
