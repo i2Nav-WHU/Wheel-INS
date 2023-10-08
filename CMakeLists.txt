@@ -37,5 +37,4 @@ set(ABSL_PROPAGATE_CXX_STD true)
 add_subdirectory(ThirdParty/abseil-cpp-20220623.1)
 target_link_libraries(${PROJECT_NAME}
         absl::strings
-        absl::str_format
-        absl::time)
+        absl::str_format)

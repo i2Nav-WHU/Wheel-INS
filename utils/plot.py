@@ -2,9 +2,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-platform = "robot" # robot
-path = "/home/yibin/code/KF-GINS/output/" + platform + "/wheelins_Navresult.nav"
-imupath = "/home/yibin/code/KF-GINS/dataset/" + platform + "/Wheel-IMU/C1_imu.bin"
+platform = "car" # robot
+path = "/home/yibin/code/Wheel-INS/output/" + platform + "/wheelins_Navresult.nav"
+imupath = "/home/yibin/code/Wheel-INS/dataset/" + platform + "/Wheel-IMU/C1_imu.bin"
 
 num_columns = 7
 dtype = np.float64

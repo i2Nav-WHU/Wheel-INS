@@ -40,7 +40,6 @@ public:
         return quaternion.toRotationMatrix();
     }
 
-    // ZYX旋转顺序, 前右下的IMU, 输出RPY
     static Vector3d matrix2euler(const Eigen::Matrix3d &dcm) {
         Vector3d euler;
 
