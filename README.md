@@ -9,7 +9,8 @@ Unlike the conventional odometer-aided inertial navigation system (ODO/INS) wher
 
 :tada::tada: Nov. 2022 Our paper on multiple IMUs-based wheeled robot localization ([Wheel-INS2](https://ieeexplore.ieee.org/document/9950438)) has been accepted to IEEE Transactions on Intelligent Transportation Systems. Check it out!
 
-## Introduction
+## Run it
+### 1. Linux
 We recommend you to use g++ compiler with Ubuntu 20.04. The build-essential libraries should be installed first:
 ```shell
 sudo apt-get install cmake
@@ -22,7 +23,7 @@ After preparing the compilation environment, you can clone the repository and ru
 # Clone the repository
 git clone git@github.com:i2Nav-WHU/Wheel-INS.git ~/
 
-# Build KF-GINS
+# Build Wheel-INS
 cd ~/Wheel-INS
 mkdir build && cd build
 
@@ -31,11 +32,25 @@ make -j10
 
 # Run demo dataset
 cd ~/Wheel-INS
-./bin/KF-GINS config/robot.yaml
-
-# Wait until the program finish
+./bin/Wheel-INS config/robot.yaml
 ```
+### 2. Windows
+Here we show how to run the code with [Visual Studio Code (VSCode)](https://code.visualstudio.com/), but you can also use other IDEs, e.g., [Visual Studio](https://visualstudio.microsoft.com/).
 
+- Install VSCode and the extensions: **C/C++**, **C/C++ Extension Pack**, **CMake**, and **CMake Tools**
+- Install [CMake](https://cmake.org/download/) and [Microsoft Visual C/C++ Build Tools](https://visualstudio.microsoft.com/downloads/).
+- Open Wheel-INS with VSCode.
+- Set compiler: open the Command Palette (Ctrl+Shift+P) and type "CMake: Select a Kit", select the correct build tool according to your system.
+- Configure CMake: type "CMake: Configure" in the Command Palette
+- Compile Project: type "CMake: Build" in the Command Palette 
+
+Once a execuble file **Wheel-INS.exe** is generated, the compilation is done. Then, you can run it via the terminal in VSCode as following:
+
+```shell
+.\bin\Release\Wheel-INS.exe config/robot.yaml
+```
+You can then run **plot.py** in utils to plot the trajectory estimated by Wheel-INS as well as the raw Wheel-IMU data.
+## Datasets
 Two sets of example data with ground truth are also provided (see ***dtaset***). Please refer to the ***ReadMe.pdf*** for details. If *git clone* is too slow, please try to download the *.zip* file directly.
 
 ## Related Papers
