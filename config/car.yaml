@@ -1,0 +1,43 @@
+# Car 
+
+#Linux
+imupath: "~/Wheel-INS/dataset/car/Wheel-IMU/C1_imu.bin"
+outputpath: "~/Wheel-INS/output/car"
+
+#Windows
+# imupath: "yourpath\\Wheel-INS\\dataset\\robot\\Wheel-IMU\\C1_imu.bin"
+# outputpath: "yourpath\\Wheel-INS\\output\\robot"
+
+imudatalen: 7
+
+imudatarate: 200
+
+starttime: 353650
+endtime: 356255
+ 
+initposstd: [ 0.05, 0.05, 0.05 ] # m
+initvelstd: [ 0.05, 0.05, 0.05 ] # m/s
+initattstd: [ 1.0, 1.0, 0.1 ] # deg
+
+imunoise:
+  arw: 1.2          # [deg/sqrt(hr)]
+  vrw: 6          # [m/s/sqrt(hr)]
+  gbstd: 50        # [deg/hr]
+  abstd: 2000     # [mGal]
+  gsstd: 50  # [ppm]
+  asstd: 500  # [ppm]
+  corrtime: 1.0                    # [hr]
+
+# Misalignment angle between the up IMU and the vehicle. (unit: degree)
+MisalignAngle: [0, 1.32, 0] 
+# Leverarm, wheel center in the imu frame
+WheelLA: [-0.01, 0.01, -0.01]
+
+# Velocity measurement standard deviation
+ODO_std: [0.035, 0.02, 0.02]
+# Velocity update time interval
+ODO_dt: 0.5
+Wheel_Radius: 0.3525
+
+# if use gyro bias to compensate the wheel velocity
+ifCompVel: false
