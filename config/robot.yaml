@@ -1,8 +1,8 @@
 # Pioneer Robot 
 
 #Linux
-imupath: "~/Wheel-INS/dataset/robot/Wheel-IMU/C1_imu.bin"
-outputpath: "~/Wheel-INS/output/robot"
+imupath: "/home/yibin/code/Wheel-INS/dataset/robot/Wheel-IMU/C1_imu.bin"
+outputpath: "/home/yibin/code/Wheel-INS/output/robot"
 
 #Windows
 # imupath: "yourpath\\Wheel-INS\\dataset\\robot\\Wheel-IMU\\C1_imu.bin"
