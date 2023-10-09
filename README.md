@@ -42,15 +42,19 @@ Here we show how to run the code with [Visual Studio Code (VSCode)](https://code
 - Install [CMake](https://cmake.org/download/) and [Microsoft Visual C/C++ Build Tools](https://visualstudio.microsoft.com/downloads/).
 - Open Wheel-INS with VSCode.
 - Set compiler: open the Command Palette (Ctrl+Shift+P) and type "CMake: Select a Kit", select the correct build tool according to your system.
-- Configure CMake: type "CMake: Configure" in the Command Palette.
-- Compile Project: type "CMake: Build" in the Command Palette.
+- Configure CMake: type and click "CMake: Configure" in the Command Palette.
+- Compile Project: type and click "CMake: Build" in the Command Palette.
 
 Once a execuble file **Wheel-INS.exe** is generated, the compilation is done. Then, you can run it via the terminal in VSCode as following:
 
 ```shell
 .\bin\Release\Wheel-INS.exe config/robot.yaml
 ```
-You can then run **plot.py** in utils to plot the trajectory estimated by Wheel-INS as well as the raw Wheel-IMU data.
+You can then run **plot.py** in utils to plot the trajectory estimated by Wheel-INS as well as the raw Wheel-IMU data. Here is an example plot for the robot dataset.
+
+<img src="https://user-images.githubusercontent.com/25290921/273607073-13f5363a-ff6c-456b-8e7a-2d52cfc60267.png" width = 45% height = 45% />
+<img src="https://user-images.githubusercontent.com/25290921/273607080-ded7e0b9-8757-45f0-af66-033ac3d2527d.png" width = 45% height = 45% /> 
+
 ## Datasets
 Two sets of example data with ground truth are provided (see ***dtaset***). Please refer to the ***ReadMe.pdf*** for details. If *git clone* is too slow, please try to download the *.zip* file directly.
 
