@@ -52,8 +52,8 @@ Once a execuble file **Wheel-INS.exe** is generated, the compilation is done. Th
 ```
 You can then run **plot.py** in utils to plot the trajectory estimated by Wheel-INS as well as the raw Wheel-IMU data. Here is an example plot for the robot dataset.
 
-<img src="https://user-images.githubusercontent.com/25290921/273607073-13f5363a-ff6c-456b-8e7a-2d52cfc60267.png" width = 40% />
-<img src="https://user-images.githubusercontent.com/25290921/273607080-ded7e0b9-8757-45f0-af66-033ac3d2527d.png" width = 40% /> 
+<img src="https://user-images.githubusercontent.com/25290921/273607073-13f5363a-ff6c-456b-8e7a-2d52cfc60267.png" width = 45% div align=left/>
+<img src="https://user-images.githubusercontent.com/25290921/273607080-ded7e0b9-8757-45f0-af66-033ac3d2527d.png" width = 45% div align=left/> 
 
 ## Datasets
 Two sets of example data with ground truth are provided (see ***dtaset***). Please refer to the ***ReadMe.pdf*** for details. If *git clone* is too slow, please try to download the *.zip* file directly.
