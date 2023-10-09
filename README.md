@@ -1,6 +1,5 @@
 # Wheel-INS: A Wheel-mounted MEMS IMU-based Dead Reckoning System
-<img src="https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black" />
-<img src="https://img.shields.io/badge/Windows-0078D6?st&logo=windows&logoColor=white" />
+<a href="https://github.com/i2Nav-WHU/Wheel-INS"><img src="https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black" /></a> <a href="https://github.com/i2Nav-WHU/Wheel-INS"><img src="https://img.shields.io/badge/Windows-0078D6?st&logo=windows&logoColor=white" /></a>
 
 Unlike the conventional odometer-aided inertial navigation system (ODO/INS) where the IMU is always placed either on the vehicle body or in the coach, in Wheel-INS, the IMU is mounted on the wheel of the ground vehicle. There are two major advanatges by doing so: 1) the wheel velocity can be obtained by the Wheel-IMU thus replace the traditional odometer (or wheel encoder); 2) the rotation modulation can be leveraged to mitigate the error accumulation of INS. Particularly, the wheel velocity calculated by the gyroscope outputs and the wheel radius is treated as an external observation with non-holonomic constraint (NHC) to fuse with INS through an extended Kalman filter (EKF).
 
@@ -39,12 +38,12 @@ cd ~/Wheel-INS
 ### 2. Windows
 Here we show how to run the code with [Visual Studio Code (VSCode)](https://code.visualstudio.com/), but you can also use other IDEs, e.g., [Visual Studio](https://visualstudio.microsoft.com/).
 
-- Install VSCode and the extensions: **C/C++**, **C/C++ Extension Pack**, **CMake**, and **CMake Tools**
+- Install VSCode and the extensions: **C/C++**, **C/C++ Extension Pack**, **CMake**, and **CMake Tools**.
 - Install [CMake](https://cmake.org/download/) and [Microsoft Visual C/C++ Build Tools](https://visualstudio.microsoft.com/downloads/).
 - Open Wheel-INS with VSCode.
 - Set compiler: open the Command Palette (Ctrl+Shift+P) and type "CMake: Select a Kit", select the correct build tool according to your system.
-- Configure CMake: type "CMake: Configure" in the Command Palette
-- Compile Project: type "CMake: Build" in the Command Palette 
+- Configure CMake: type "CMake: Configure" in the Command Palette.
+- Compile Project: type "CMake: Build" in the Command Palette.
 
 Once a execuble file **Wheel-INS.exe** is generated, the compilation is done. Then, you can run it via the terminal in VSCode as following:
 
