@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 
     Paras paras;
     if (!loadConfig(config, paras)) {
-        std::cout << "Error occurs in the configuration file: " <<exception.what() << std::endl;
+        std::cout << "Error occurs in the configuration file!" << std::endl;
         return -1;
     }
 
