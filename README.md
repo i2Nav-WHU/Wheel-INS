@@ -1,7 +1,8 @@
 # Wheel-INS: A Wheel-mounted MEMS IMU-based Dead Reckoning System
 <a href="https://github.com/i2Nav-WHU/Wheel-INS"><img src="https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black" /></a> <a href="https://github.com/i2Nav-WHU/Wheel-INS"><img src="https://img.shields.io/badge/Windows-0078D6?st&logo=windows&logoColor=white" /></a>
 
-Unlike the conventional odometer-aided inertial navigation system (ODO/INS) where the IMU is always placed either on the vehicle body or in the coach, in Wheel-INS, the IMU is mounted on the wheel of the ground vehicle. There are two major advanatges by doing so: 1) the wheel velocity can be obtained by the Wheel-IMU thus replace the traditional odometer (or wheel encoder); 2) the rotation modulation can be leveraged to mitigate the error accumulation of INS. Particularly, the wheel velocity calculated by the gyroscope outputs and the wheel radius is treated as an external observation with non-holonomic constraint (NHC) to fuse with INS through an extended Kalman filter (EKF).
+IMU drifts quickly with time! Well...It's true, but what if we mount it on the wheel❓
+In Wheel-INS, the IMU is mounted on the wheel of the ground vehicle. There are two major advantages of doing so: 1) the wheel velocity can be obtained by the Wheel-IMU thus replace the traditional odometer (or wheel encoder); 2) the rotation modulation can be leveraged to mitigate the error accumulation of INS. Particularly, the wheel velocity calculated by the gyroscope outputs and the wheel radius is treated as an external observation with non-holonomic constraint (NHC) to fuse with INS through an extended Kalman filter (EKF).
 
 ## :boom:News:boom:
 :tada::tada: Oct. 2023 A completely new version of the code supporting both Linux and Windows is released!
@@ -12,7 +13,7 @@ Unlike the conventional odometer-aided inertial navigation system (ODO/INS) wher
 
 ## Run it
 ### 1. Linux
-We recommend you to use g++ compiler with Ubuntu 20.04. The build-essential libraries should be installed first:
+We recommend you use the g++ compiler with Ubuntu 20.04. The build-essential libraries should be installed first:
 ```shell
 sudo apt-get install cmake
 sudo apt-get install build-essential
@@ -45,7 +46,7 @@ Here we show how to run the code with [Visual Studio Code (VSCode)](https://code
 - Configure CMake: type and click "CMake: Configure" in the Command Palette.
 - Compile Project: type and click "CMake: Build" in the Command Palette.
 
-Once a execuble file **Wheel-INS.exe** is generated, the compilation is done. Then, you can run it via the terminal in VSCode as following:
+Once an executable file **Wheel-INS.exe** is generated, the compilation is done. Then, you can run it via the terminal in VSCode as follows:
 
 ```shell
 .\bin\Release\Wheel-INS.exe config/robot.yaml
@@ -55,10 +56,10 @@ You can then run **plot.py** in utils to plot the trajectory estimated by Wheel-
 <img src="https://user-images.githubusercontent.com/25290921/273607073-13f5363a-ff6c-456b-8e7a-2d52cfc60267.png" width = 45% div align=left/> <img src="https://user-images.githubusercontent.com/25290921/273607080-ded7e0b9-8757-45f0-af66-033ac3d2527d.png" width = 45% div align=center/> 
 
 ## Datasets
-Two sets of example data with ground truth are provided (see ***dtaset***). Please refer to the ***ReadMe.pdf*** for details. If *git clone* is too slow, please try to download the *.zip* file directly.
+Two sets of example data with ground truth are provided (see *** dataset ***). Please refer to the ***ReadMe.pdf*** for details. If *git clone* is too slow, please try to download the *.zip* file directly.
 
 ## Related Papers
-*Based on the study of Wheel-IMU, we have published three papers. 1) The original Wheel-INS paper where we proposed a wheel-mounted IMU-based dead reckoning system and investigated its characteristics. 2) A thorough and complete comparison on three different measurement models in Wheel-INS with both theoretical analysis and experimental illustration. 3) A multiple IMUs-based localization system for wheeled robots by obtaining different dynamic information of the vhehicle and taking advantage of the relative spatial constraints among the inertial sensors.*
+*Based on the study of Wheel-IMU, we have published three papers. 1) The original Wheel-INS paper where we proposed a wheel-mounted IMU-based dead reckoning system and investigated its characteristics. 2) A thorough and complete comparison on three different measurement models in Wheel-INS with both theoretical analysis and experimental illustration. 3) A multiple IMUs-based localization system for wheeled robots by obtaining different dynamic information of the vehicle and taking advantage of the relative spatial constraints among the inertial sensors.*
 
 If you find our studies helpful to your academic research, please consider citing the related papers.
 
@@ -104,6 +105,6 @@ If you find our studies helpful to your academic research, please consider citin
 The code is released under GPLv3 license.
 
 ## Acknowledgement
-We would like to thank i2Nav group for sharing [KF-GINS](https://github.com/i2Nav-WHU/KF-GINS), which is referenced by this code. 
+We would like to thank the [i2Nav group](http://i2nav.cn/) for sharing [KF-GINS](https://github.com/i2Nav-WHU/KF-GINS), which is referenced by this code. 
 
 For any questions, please feel free to contact Mr. Yibin Wu (ybwu at whu.edu.cn) or Dr. Jian Kuang (kuang at whu.edu.cn).
