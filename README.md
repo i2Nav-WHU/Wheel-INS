@@ -57,7 +57,7 @@ You can then run **plot.py** in utils to plot the trajectory estimated by Wheel-
 <img src="https://user-images.githubusercontent.com/25290921/273607073-13f5363a-ff6c-456b-8e7a-2d52cfc60267.png" width = 45% div align=left/> <img src="https://user-images.githubusercontent.com/25290921/273607080-ded7e0b9-8757-45f0-af66-033ac3d2527d.png" width = 45% div align=center/> 
 
 ## Datasets
-Two sets of example data with ground truth are provided (see *** dataset ***). Please refer to the ***ReadMe.pdf*** for details. If *git clone* is too slow, please try to download the *.zip* file directly.
+Two sets of example data with ground truth are provided (see ***dataset***). Please refer to the ***ReadMe.pdf*** for details. If *git clone* is too slow, please try to download the *.zip* file directly.
 
 ## Related Papers
 *Based on the study of Wheel-IMU, we have published three papers. 1) The original Wheel-INS paper where we proposed a wheel-mounted IMU-based dead reckoning system and investigated its characteristics. 2) A thorough and complete comparison on three different measurement models in Wheel-INS with both theoretical analysis and experimental illustration. 3) A multiple IMUs-based localization system for wheeled robots by obtaining different dynamic information of the vehicle and taking advantage of the relative spatial constraints among the inertial sensors.*
