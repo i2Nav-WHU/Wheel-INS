@@ -3,7 +3,7 @@
 
 IMU drifts quickly with time! Well...It's true, but what if we mount it on the wheel❓
 
-In Wheel-INS, the IMU is mounted on the wheel of the ground vehicle. There are two major advantages of doing so: 1) the wheel velocity can be obtained by the Wheel-IMU thus replace the traditional odometer (or wheel encoder); 2) the rotation modulation can be leveraged to mitigate the error accumulation of INS.
+In Wheel-INS, we proposed a dead reckoning sysytem for the wheeled robots **using only one Wheel-mounted IMU**. There are two major advantages of mounting to the wheel: 1) the vehicle velocity can be directly obtained by the Wheel-IMU without wheel encoder; 2) the rotation modulation can be leveraged to mitigate the error accumulation of the inetial navigation system.
 
 ## :boom:News:boom:
 :tada::tada: Oct. 2023 A completely new version of the code supporting both Linux and Windows is released!
