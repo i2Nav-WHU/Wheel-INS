@@ -44,20 +44,19 @@ inline bool loadConfig(YAML::Node &config, Paras &paras) {
     return false;
   }
   for (int i = 0; i < 3; i++) {
-    paras.imunoise.gyr_arw[i] = arw;
-    paras.imunoise.acc_vrw[i] = vrw;
-    paras.imunoise.gyrbias_std[i] = gbstd;
-    paras.imunoise.accbias_std[i] = abstd;
-    paras.imunoise.gyrscale_std[i] = gsstd;
-    paras.imunoise.accscale_std[i] = asstd;
+    paras.imunoise.gyr_arw[i] = arw * (D2R / 60.0);
+    paras.imunoise.acc_vrw[i] = vrw / 60.0;
+    paras.imunoise.gyrbias_std[i] = gbstd * (D2R / 3600.0);
+    paras.imunoise.accbias_std[i] = abstd * 1e-5;
+    paras.imunoise.gyrscale_std[i] = gsstd * 1e-6;
+    paras.imunoise.accscale_std[i] = asstd * 1e-6;
+
+    paras.initstate_std.imuerror.gyrbias[i] = gbstd * (D2R / 3600.0);
+    paras.initstate_std.imuerror.accbias[i] = abstd * 1e-5;
+    paras.initstate_std.imuerror.gyrscale[i] = gsstd * 1e-6;
+    paras.initstate_std.imuerror.accscale[i] = asstd * 1e-6;
   }
 
-  paras.imunoise.gyr_arw *= (D2R / 60.0);
-  paras.imunoise.acc_vrw /= 60.0;
-  paras.imunoise.gyrbias_std *= (D2R / 3600.0);
-  paras.imunoise.accbias_std *= 1e-5;
-  paras.imunoise.gyrscale_std *= 1e-6;
-  paras.imunoise.accscale_std *= 1e-6;
   paras.imunoise.corr_time *= 3600;
 
   std::vector<double> mountAngle, leverArm, odo_measurement_std;
