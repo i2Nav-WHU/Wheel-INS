@@ -5,7 +5,7 @@ IMU drifts quickly with time! Well...it's true, but what if we mount it on the w
 
 In Wheel-INS, we proposed a dead reckoning sysytem for the wheeled robots **using only one Wheel-mounted IMU**. There are two major advantages of mounting IMU to the wheel: 1) The vehicle velocity can be directly obtained by the Wheel-IMU without wheel encoder; 2) The continuous rotation of the wheel can somewhat mitigate the error accumulation of the inertial navigation system because of rotation modulation.
 
-## :boom:News:boom:
+## 💥News💥
 :tada::tada: Oct. 2023 A completely new version of the code supporting both Linux and Windows is released!
 
 :tada::tada: Nov. 2022 Wheel-INS has been extended to a SLAM solution! Check out our paper of [Wheel-SLAM](https://arxiv.org/pdf/2211.03174.pdf) accepted to IEEE Robotics and Automation Letters. The [source code](https://github.com/i2Nav-WHU/Wheel-SLAM) is also released. 
