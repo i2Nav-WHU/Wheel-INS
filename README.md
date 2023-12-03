@@ -1,16 +1,18 @@
 # Wheel-INS: A Wheel-mounted MEMS IMU-based Dead Reckoning System
 <a href="https://github.com/i2Nav-WHU/Wheel-INS"><img src="https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black" /></a> <a href="https://github.com/i2Nav-WHU/Wheel-INS"><img src="https://img.shields.io/badge/Windows-0078D6?st&logo=windows&logoColor=white" /></a>
 
-IMU drifts quickly with time! Well...It's true, but what if we mount it on the wheel❓
+IMU drifts quickly with time! Well...it's true, but what if we mount it on the wheel❓
 
-In Wheel-INS, we proposed a dead reckoning sysytem for the wheeled robots **using only one Wheel-mounted IMU**. There are two major advantages of mounting to the wheel: 1) the vehicle velocity can be directly obtained by the Wheel-IMU without wheel encoder; 2) the rotation modulation can be leveraged to mitigate the error accumulation of the inetial navigation system.
+In Wheel-INS, we proposed a dead reckoning sysytem for the wheeled robots **using only one Wheel-mounted IMU**. There are two major advantages of mounting IMU to the wheel: 1) The vehicle velocity can be directly obtained by the Wheel-IMU without wheel encoder; 2) The continuous rotation of the wheel can somewhat mitigate the error accumulation of the inertial navigation system because of rotation modulation.
 
 ## :boom:News:boom:
 :tada::tada: Oct. 2023 A completely new version of the code supporting both Linux and Windows is released!
 
-:tada::tada: Nov. 2022 Wheel-INS has been extended to SLAM! Check out our paper of [Wheel-SLAM](https://arxiv.org/pdf/2211.03174.pdf) accepted to IEEE Robotics and Automation Letters. The [source code](https://github.com/i2Nav-WHU/Wheel-SLAM) is also released. 
+:tada::tada: Nov. 2022 Wheel-INS has been extended to a SLAM solution! Check out our paper of [Wheel-SLAM](https://arxiv.org/pdf/2211.03174.pdf) accepted to IEEE Robotics and Automation Letters. The [source code](https://github.com/i2Nav-WHU/Wheel-SLAM) is also released. 
 
-:tada::tada: Nov. 2022 Our paper on multiple IMUs-based wheeled robot localization ([Wheel-INS2](https://ieeexplore.ieee.org/document/9950438)) has been accepted to IEEE Transactions on Intelligent Transportation Systems. Check it out!
+:tada::tada: Nov. 2022 Our paper on multiple IMUs-based wheeled robot localization ([Wheel-INS2](https://arxiv.org/abs/2012.10593)) has been accepted to IEEE Transactions on Intelligent Transportation Systems. Check it out!
+
+:tada::tada: Aug. 2021 ([Wheel-INS](http://i2nav.cn/ueditor/jsp/upload/file/20210905/1630804325780076093.pdf)) has been accepted to IEEE Transactions on Vehicular Technology. Check it out!
 
 ## Run it
 ### 1. Linux
@@ -106,6 +108,6 @@ If you find our studies helpful to your academic research, please consider citin
 The code is released under GPLv3 license.
 
 ## Acknowledgement
-We would like to thank the [i2Nav group](http://i2nav.cn/) for sharing [KF-GINS](https://github.com/i2Nav-WHU/KF-GINS), which is referenced by this code. 
+We would like to thank the [i2Nav group](http://i2nav.cn/) for sharing [KF-GINS](https://github.com/i2Nav-WHU/KF-GINS). 
 
 For any questions, please feel free to contact Mr. Yibin Wu (ybwu at whu.edu.cn) or Dr. Jian Kuang (kuang at whu.edu.cn).
