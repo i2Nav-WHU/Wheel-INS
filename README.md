@@ -12,7 +12,7 @@ In Wheel-INS, we proposed a dead reckoning sysytem for the wheeled robots **usin
 
 :tada::tada: Nov. 2022 Our paper on multiple IMUs-based wheeled robot localization ([Wheel-INS2](https://arxiv.org/abs/2012.10593)) has been accepted to IEEE Transactions on Intelligent Transportation Systems. Check it out!
 
-:tada::tada: Aug. 2021 ([Wheel-INS](http://i2nav.cn/ueditor/jsp/upload/file/20210905/1630804325780076093.pdf)) has been accepted to IEEE Transactions on Vehicular Technology. Check it out!
+:tada::tada: Aug. 2021 [Wheel-INS](http://i2nav.cn/ueditor/jsp/upload/file/20210905/1630804325780076093.pdf) has been accepted to IEEE Transactions on Vehicular Technology. Check it out!
 
 ## Run it
 ### 1. Linux
