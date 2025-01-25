@@ -1,11 +1,17 @@
-# Wheel-INS: A Wheel-mounted MEMS IMU-based Dead Reckoning System
+<p align="center">
+<h1 align="center">Wheel-INS: A Wheel-mounted MEMS IMU-based Dead Reckoning System</h1>
+<p align="center">
+<a href="http://i2nav.cn/ueditor/jsp/upload/file/20210905/1630804325780076093.pdf"><img src="https://img.shields.io/badge/Paper-pdf-<COLOR>.svg?style=flat-square" /></a>
 <a href="https://github.com/i2Nav-WHU/Wheel-INS"><img src="https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black" /></a> <a href="https://github.com/i2Nav-WHU/Wheel-INS"><img src="https://img.shields.io/badge/Windows-0078D6?st&logo=windows&logoColor=white" /></a>
-
+ </p>
+ </p>
 IMU drifts quickly with time! Well...it's true, but what if we mount it on the wheel❓
 
 In [Wheel-INS](http://i2nav.cn/ueditor/jsp/upload/file/20210905/1630804325780076093.pdf), we proposed a dead reckoning sysytem for the wheeled robots **using only one Wheel-mounted IMU**. There are two major advantages of mounting IMU to the wheel: 1) The vehicle velocity can be directly obtained by the Wheel-IMU without wheel encoder; 2) The continuous rotation of the wheel can somewhat mitigate the error accumulation of the inertial navigation system because of rotation modulation.
 
 ## 💥News💥
+:tada::tada: Jan. 2025 Wheel-INS has been extended to [Wheel-GINS](https://github.com/i2Nav-WHU/Wheel-GINS) with the fusion with GNSS. Check out our new [paper](https://arxiv.org/pdf/2501.03079) accepted to IEEE Transactions on Intelligent Transportation Systems.  
+
 :tada::tada: Oct. 2023 A completely new version of the code supporting both Linux and Windows is released!
 
 :tada::tada: Nov. 2022 Wheel-INS has been extended to a SLAM solution! Check out our paper of [Wheel-SLAM](https://arxiv.org/pdf/2211.03174.pdf) accepted to IEEE Robotics and Automation Letters. The [source code](https://github.com/i2Nav-WHU/Wheel-SLAM) is also released. 
